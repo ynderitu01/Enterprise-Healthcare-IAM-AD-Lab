@@ -2,13 +2,13 @@
 
 **Platform:** Windows Server 2022 | Active Directory Domain Services | Group Policy  
 **Domain:** dationcare.local  
-**Scope:** 4 departments | 8 users | 4 security groups | HIPAA-compliant security policies
+**Scope:** 4 departments | 8 users | 4 security groups | Healthcare-focused security controls
 
 ---
 
 ## Overview
 
-This lab simulates a real enterprise Healthcare IT environment built from scratch. I deployed and configured a full Active Directory domain for a mock hospital network, covering domain controller setup, organizational unit design, user provisioning, role-based access control, group policy enforcement, and department file share permissions.
+This lab simulates a real enterprise Healthcare IT environment built from scratch. I deployed and configured a full Active Directory domain for a mock hospital network. The project covers domain controller setup, organizational unit design, user provisioning, role-based access control, group policy enforcement, and department file share permissions.
 
 This is the type of environment a Healthcare IT Support Specialist or IAM Associate manages day to day.
 
@@ -32,7 +32,7 @@ This is the type of environment a Healthcare IT Support Specialist or IAM Associ
 
 ## Part 1 - Windows Server Installation
 
-Deployed Windows Server 2022 in VirtualBox and performed a clean installation configuring language, installation type, and administrator credentials.
+Deployed Windows Server 2022 in VirtualBox and performed a clean installation. Configured language settings, installation type, and administrator credentials.
 
 ![Windows Server Setup](Screenshots/01-windows-server-setup.jpg)
 
@@ -56,7 +56,7 @@ Selected Windows Server 2022 Standard Evaluation with Desktop Experience for ful
 
 ## Part 2 - Active Directory Domain Services Installation
 
-Installed the AD DS role using the Add Roles and Features Wizard, including all required management tools and Group Policy Management.
+Installed the AD DS role using the Add Roles and Features Wizard. Included all required management tools and Group Policy Management components.
 
 ![Add Roles Wizard](Screenshots/09-add-roles-wizard.jpg)
 
@@ -66,7 +66,7 @@ Installed the AD DS role using the Add Roles and Features Wizard, including all 
 
 ![Server Roles](Screenshots/12-server-roles.jpg)
 
-Selected Active Directory Domain Services along with all required features including Group Policy Management, Remote Server Administration Tools, and Active Directory PowerShell module.
+Selected Active Directory Domain Services along with all required features including Group Policy Management, Remote Server Administration Tools, and the Active Directory PowerShell module.
 
 ![AD DS Selected](Screenshots/14-ad-ds-selected.jpg)
 
@@ -80,7 +80,7 @@ Selected Active Directory Domain Services along with all required features inclu
 
 ## Part 3 - Domain Controller Promotion
 
-Promoted the server to a Domain Controller and created a new forest with the root domain dationcare.local.
+Promoted the server to a Domain Controller and created a new forest with dationcare.local as the root domain.
 
 ![Post Deployment Config](Screenshots/18-post-deployment-config.jpg)
 
@@ -92,6 +92,8 @@ Promoted the server to a Domain Controller and created a new forest with the roo
 
 ![DNS Options](Screenshots/22-dns-options.jpg)
 
+DNS delegation warning is expected in a private lab environment. No public parent zone exists for dationcare.local so delegation was not configured.
+
 ![NetBIOS Name](Screenshots/23-netbios-name.jpg)
 
 ![AD Paths](Screenshots/24-ad-paths.jpg)
@@ -100,7 +102,7 @@ Promoted the server to a Domain Controller and created a new forest with the roo
 
 ![Prerequisites Check](Screenshots/26-prerequisites-check.jpg)
 
-All prerequisite checks passed. Server promoted and rebooted automatically as dationcare.local Domain Controller.
+All prerequisite checks passed. Server promoted and rebooted automatically as the dationcare.local Domain Controller.
 
 ![Domain Controller Success](Screenshots/27-domain-controller-success.png.jpg)
 
@@ -108,7 +110,7 @@ All prerequisite checks passed. Server promoted and rebooted automatically as da
 
 ## Part 4 - Organizational Unit Design
 
-Opened Active Directory Users and Computers and built a department-based OU hierarchy to organize hospital staff by role.
+Opened Active Directory Users and Computers and built a department-based OU structure to organize hospital staff by role.
 
 ![Active Directory Users and Computers](Screenshots/28-active-directory-users-computers.png.jpg)
 
@@ -122,7 +124,7 @@ Created 4 department OUs: Physicians, Nursing, Pharmacy, and Billing.
 
 ## Part 5 - User Provisioning
 
-Provisioned 8 user accounts across all 4 departments with mandatory password reset at first logon.
+Provisioned 8 user accounts across all 4 departments. All accounts were configured with mandatory password reset at first logon.
 
 ![First User Created](Screenshots/31-first-user-created.jpg)
 
@@ -175,7 +177,7 @@ Each user was added to their department security group.
 
 ## Part 7 - Group Policy Configuration
 
-Created and configured the DATIONCARE-Password-Policy GPO to enforce HIPAA-grade password and account lockout requirements across the domain.
+Created the DATIONCARE-Password-Policy GPO to enforce HIPAA-grade password and account lockout requirements across the domain.
 
 ![Group Policy Management](Screenshots/44-group-policy-management.jpg)
 
@@ -187,7 +189,7 @@ Created and configured the DATIONCARE-Password-Policy GPO to enforce HIPAA-grade
 
 ![Password Policy Settings](Screenshots/48-password-policy-settings.jpg)
 
-**Password Policy configured:**
+**Password Policy:**
 
 ![Min Password Length](Screenshots/49-min-password-length.jpg)
 
@@ -195,22 +197,21 @@ Created and configured the DATIONCARE-Password-Policy GPO to enforce HIPAA-grade
 
 ![Max Age](Screenshots/52-max-age.jpg)
 
-![Min Length](Screenshots/53-min-length.jpg)
-
 ![Min Age](Screenshots/54-min-age.jpg)
 
 ![Complexity Enabled](Screenshots/55-complexity-enabled.jpg)
 
 ![Password Policy Complete](Screenshots/56-password-policy-complete.jpg)
 
-**Password policy summary:**
-- Minimum password length: 12 characters
-- Password history: 10 passwords remembered
-- Maximum password age: 90 days
-- Minimum password age: 1 day
-- Complexity requirements: Enabled
+| Setting | Value |
+|---|---|
+| Minimum password length | 12 characters |
+| Password history | 10 passwords remembered |
+| Maximum password age | 90 days |
+| Minimum password age | 1 day |
+| Complexity requirements | Enabled |
 
-**Account Lockout Policy configured:**
+**Account Lockout Policy:**
 
 ![Account Lockout Policy](Screenshots/57-account-lockout-policy.jpg)
 
@@ -218,16 +219,17 @@ Created and configured the DATIONCARE-Password-Policy GPO to enforce HIPAA-grade
 
 ![Lockout Policy Complete](Screenshots/59-lockout-policy-complete.jpg)
 
-**Account lockout summary:**
-- Lockout threshold: 5 invalid logon attempts
-- Lockout duration: 30 minutes
-- Reset counter after: 30 minutes
+| Setting | Value |
+|---|---|
+| Lockout threshold | 5 invalid logon attempts |
+| Lockout duration | 30 minutes |
+| Reset counter after | 30 minutes |
 
 ---
 
 ## Part 8 - GPO Linked to Domain
 
-Linked the DATIONCARE-Password-Policy GPO to dationcare.local so policies apply across all users and departments.
+Linked the DATIONCARE-Password-Policy GPO to dationcare.local so the policies apply to all users and departments automatically.
 
 ![Link GPO](Screenshots/60-link-gpo.jpg)
 
@@ -237,13 +239,13 @@ Linked the DATIONCARE-Password-Policy GPO to dationcare.local so policies apply 
 
 ## Part 9 - File Share Permissions
 
-Created department shared folders under DationCare-Shares and assigned each security group access to only their department folder.
+Created department shared folders under DationCare-Shares and assigned each security group access to their folder only.
 
 ![DationCare Shares](Screenshots/62-dationcare-shares.jpg)
 
 ![Department Folders](Screenshots/63-department-folder.jpg)
 
-Each security group was assigned Read permissions to their corresponding folder only. This enforces RBAC at the file system level — a physician cannot access the Nursing or Billing folders.
+Each security group was given Read permissions to their department folder only. A physician cannot access the Nursing or Billing folders. This enforces RBAC at the file system level.
 
 ![Physicians Folder Permissions](Screenshots/64-physicians-folder-permissions.jpg)
 
@@ -253,22 +255,20 @@ Each security group was assigned Read permissions to their corresponding folder 
 
 ![Nursing Permissions](Screenshots/69-nursing-permissions.jpg)
 
-**Troubleshooting note:** During file share setup, Windows blocked removal of an inherited security group from a subfolder. Resolved by navigating to Advanced Security Settings, disabling inheritance, and converting inherited permissions to explicit permissions before making changes. This is standard practice when applying granular access controls to subfolders in an AD environment.
+**Troubleshooting note:** During file share setup, Windows blocked removal of an inherited security group from a subfolder. Fixed this by going into Advanced Security Settings, disabling inheritance, and converting inherited permissions to explicit permissions. This is standard practice when applying granular access controls to subfolders in an AD environment.
 
 ---
 
-## HIPAA Compliance Implementation
-
-Applied security controls aligned with HIPAA technical safeguard requirements:
+## Healthcare Security Controls Applied
 
 - Role-based access control limiting PHI access to authorized department groups only
 - Password complexity and rotation policies enforced via GPO
-- Account lockout after 5 failed attempts to prevent unauthorized access
-- Department file shares restricted to authorized security groups
+- Account lockout after 5 failed attempts to prevent brute force access
+- Department file shares restricted to matching security groups
 - Mandatory password reset at first logon for all provisioned users
 
 ---
 
 ## Tools and Technologies
 
-Windows Server 2022, Active Directory Domain Services, Group Policy Management, Active Directory Users and Computers, VirtualBox, PowerShell, DNS, File Share Permissions, MediClear HIPAA Compliance Framework
+Windows Server 2022, Active Directory Domain Services, Group Policy Management, Active Directory Users and Computers, VirtualBox, DNS, File Share Permissions, MediClear HIPAA Compliance Framework
