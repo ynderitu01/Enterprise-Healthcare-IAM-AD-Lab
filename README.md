@@ -26,7 +26,7 @@ This is the type of environment a Healthcare IT Support Specialist or IAM Associ
 - Group Policy Object (GPO) creation and linking
 - Password and account lockout policy enforcement
 - File share permissions
-- HIPAA compliance configuration
+- Healthcare security policy implementation
 
 ---
 
